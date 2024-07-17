@@ -10,6 +10,10 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
 
     private NetworkRunner _runner;
 
+    private void Start()
+    {
+        StartGame(GameModeHandler.GameMode);
+    }
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
         if (runner.IsServer)
@@ -45,7 +49,18 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
     public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input) { }
     public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason) { }
     public void OnConnectedToServer(NetworkRunner runner) { }
+
+    public void OnDisconnectedFromServer(NetworkRunner runner, NetDisconnectReason reason)
+    {
+        throw new System.NotImplementedException();
+    }
+
     public void OnConnectRequest(NetworkRunner runner, NetworkRunnerCallbackArgs.ConnectRequest request, byte[] token) { }
+
+    public void OnConnectFailed(NetworkRunner runner, NetAddress remoteAddress, NetConnectFailedReason reason)
+    {
+        throw new System.NotImplementedException();
+    }
     public void OnUserSimulationMessage(NetworkRunner runner, SimulationMessagePtr message) { }
     public void OnSessionListUpdated(NetworkRunner runner, List<SessionInfo> sessionList) { }
     public void OnCustomAuthenticationResponse(NetworkRunner runner, Dictionary<string, object> data) { }
@@ -54,6 +69,15 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
     public void OnSceneLoadStart(NetworkRunner runner) { }
     public void OnObjectExitAOI(NetworkRunner runner, NetworkObject obj, PlayerRef player) { }
     public void OnObjectEnterAOI(NetworkRunner runner, NetworkObject obj, PlayerRef player) { }
+    public void OnReliableDataReceived(NetworkRunner runner, PlayerRef player, ReliableKey key, System.ArraySegment<byte> data)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void OnReliableDataProgress(NetworkRunner runner, PlayerRef player, ReliableKey key, float progress)
+    {
+        throw new System.NotImplementedException();
+    }
 
     async void StartGame(GameMode mode)
     {
@@ -79,40 +103,20 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
         });
     }
 
-    private void OnGUI()
-    {
-        if (_runner == null)
-        {
-            if (GUI.Button(new Rect(0, 0, 200, 40), "Host"))
-            {
-                StartGame(GameMode.Host);
-            }
-            if (GUI.Button(new Rect(0, 40, 200, 40), "Join"))
-            {
-                StartGame(GameMode.Client);
-            }
-        }
-    }
-
-    public void OnDisconnectedFromServer(NetworkRunner runner, NetDisconnectReason reason)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public void OnConnectFailed(NetworkRunner runner, NetAddress remoteAddress, NetConnectFailedReason reason)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public void OnReliableDataReceived(NetworkRunner runner, PlayerRef player, ReliableKey key, System.ArraySegment<byte> data)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public void OnReliableDataProgress(NetworkRunner runner, PlayerRef player, ReliableKey key, float progress)
-    {
-        throw new System.NotImplementedException();
-    }
+    // private void OnGUI()
+    // {
+    //     if (_runner == null)
+    //     {
+    //         if (GUI.Button(new Rect(0, 0, 200, 40), "Host"))
+    //         {
+    //             StartGame(GameMode.Host);
+    //         }
+    //         if (GUI.Button(new Rect(0, 40, 200, 40), "Join"))
+    //         {
+    //             StartGame(GameMode.Client);
+    //         }
+    //     }
+    // }
 }
 
 // Define a class for the player input data
