@@ -10,9 +10,13 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
 
     private NetworkRunner _runner;
 
+    // private void Start()
+    // {
+    //     StartGame(GameModeHandler.GameMode);
+    // }
     private void Start()
     {
-        StartGame(GameModeHandler.GameMode);
+        StartGame(GameModeHandler.GameMode, GameModeHandler.RoomName, GameModeHandler.PlayerName);
     }
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
@@ -79,13 +83,34 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
         throw new System.NotImplementedException();
     }
 
-    async void StartGame(GameMode mode)
+    // async void StartGame(GameMode mode)
+    // {
+    //     // Create the Fusion runner and let it know that we will be providing user input
+    //     _runner = gameObject.AddComponent<NetworkRunner>();
+    //     _runner.ProvideInput = true;
+
+    //     // Create the NetworkSceneInfo from the current scene
+    //     var scene = SceneRef.FromIndex(SceneManager.GetActiveScene().buildIndex);
+    //     var sceneInfo = new NetworkSceneInfo();
+    //     if (scene.IsValid)
+    //     {
+    //         sceneInfo.AddSceneRef(scene, LoadSceneMode.Additive);
+    //     }
+
+    //     // Start or join (depends on gamemode) a session with a specific name
+    //     await _runner.StartGame(new StartGameArgs()
+    //     {
+    //         GameMode = mode,
+    //         SessionName = "TestRoom",
+    //         Scene = scene,
+    //         SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
+    //     });
+    // }
+    async void StartGame(GameMode mode, string roomName, string playerName)
     {
-        // Create the Fusion runner and let it know that we will be providing user input
         _runner = gameObject.AddComponent<NetworkRunner>();
         _runner.ProvideInput = true;
 
-        // Create the NetworkSceneInfo from the current scene
         var scene = SceneRef.FromIndex(SceneManager.GetActiveScene().buildIndex);
         var sceneInfo = new NetworkSceneInfo();
         if (scene.IsValid)
@@ -93,11 +118,10 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
             sceneInfo.AddSceneRef(scene, LoadSceneMode.Additive);
         }
 
-        // Start or join (depends on gamemode) a session with a specific name
         await _runner.StartGame(new StartGameArgs()
         {
             GameMode = mode,
-            SessionName = "TestRoom",
+            SessionName = roomName,
             Scene = scene,
             SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
         });

@@ -6,10 +6,17 @@ using Fusion;
 public class PlayerMovement : NetworkBehaviour
 {
     private NetworkCharacterController _characterController;
+    private string playerName;
 
     public override void Spawned()
     {
         _characterController = GetComponent<NetworkCharacterController>();
+    }
+
+    public void SetPlayerName(string name)
+    {
+        playerName = name;
+        // Optionally update a UI element or display the name in some way
     }
 
     public override void FixedUpdateNetwork()
