@@ -18,13 +18,28 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
     {
         StartGame(GameModeHandler.GameMode, GameModeHandler.RoomName, GameModeHandler.PlayerName);
     }
+    // public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
+    // {
+    //     if (runner.IsServer)
+    //     {
+    //         // Instantiate player prefab for the new player
+    //         Vector3 spawnPosition = new Vector3(Random.Range(-5, 5), 1, Random.Range(-5, 5));
+    //         NetworkObject networkPlayerObject = runner.Spawn(playerPrefab, spawnPosition, Quaternion.identity, player);
+    //     }
+    // }
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
         if (runner.IsServer)
         {
-            // Instantiate player prefab for the new player
             Vector3 spawnPosition = new Vector3(Random.Range(-5, 5), 1, Random.Range(-5, 5));
             NetworkObject networkPlayerObject = runner.Spawn(playerPrefab, spawnPosition, Quaternion.identity, player);
+
+            // Set the player name for the newly spawned player
+            var playerNameDisplay = networkPlayerObject.GetComponentInChildren<PlayerNameDisplay>();
+            if (playerNameDisplay != null)
+            {
+                playerNameDisplay.SetPlayerName(GameModeHandler.PlayerName);
+            }
         }
     }
 
